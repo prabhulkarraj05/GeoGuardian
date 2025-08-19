@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - GeoGuardian</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles/components/user-dashboard.css">
+    <link rel="stylesheet" href="../styles/components/global.css">
+    
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-layout">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    GeoGuardian
+                </div>
+                <div class="role-indicator">
+                    <i class="fas fa-user-check"></i>
+                    <span>User Mode</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="location-status">
+                    <div class="status-indicator online" id="location-status"></div>
+                    <span>Location Sharing: <span id="sharing-status">Active</span></span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notification-count">2</span>
+                </div>
+                <div class="user-profile" onclick="toggleProfileMenu()">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-avatar">
+                    <span class="profile-name" id="user-name">Sarah Johnson</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- SOS Button (Prominent Emergency Button) -->
+        <button id="sos-button" class="sos-button" onclick="triggerSOS()">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>SOS</span>
+        </button>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h1>Stay Safe, <span id="welcome-name">Sarah</span>!</h1>
+                <p>Your guardians are watching over you. You're protected.</p>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                
+                <!-- Map Container -->
+                <div class="map-container">
+                    <div class="map-header">
+                        <h2>Your Location</h2>
+                        <div class="map-controls">
+                            <button class="map-control-btn" onclick="centerOnUser()" title="Center on me">
+                                <i class="fas fa-crosshairs"></i>
+                            </button>
+                            <button class="map-control-btn" onclick="toggleLocationSharing()" title="Toggle sharing">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <button class="map-control-btn" onclick="fullscreenMap()" title="Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="user-map" class="map-display"></div>
+                    <div class="map-info">
+                        <div class="current-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="location-details">
+                                <span class="location-address" id="current-address">Loading current location...</span>
+                                <span class="location-coords" id="current-coords">Lat: ---, Lng: ---</span>
+                            </div>
+                        </div>
+                        <div class="location-accuracy">
+                            <i class="fas fa-bullseye"></i>
+                            <span>Accuracy: <span id="location-accuracy">---</span>m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Panel -->
+                <div class="status-panel">
+                    <div class="panel-header">
+                        <h3>Status Overview</h3>
+                        <div class="status-badges">
+                            <span class="status-badge safe" id="safety-status">Safe</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Guardian Connections -->
+                    <div class="guardian-connections">
+                        <h4>Connected Guardians</h4>
+                        <div class="guardian-list">
+                            <div class="guardian-item">
+                                <div class="guardian-avatar">
+                                    <img src="https://via.placeholder.com/35" alt="Dad">
+                                    <div class="connection-indicator online"></div>
+                                </div>
+                                <div class="guardian-info">
+                                    <span class="guardian-name">Dad</span>
+                                    <span class="guardian-role">Parent</span>
+                                </div>
+                                <button class="contact-btn" onclick="contactGuardian('dad')" title="Contact">
+                                    <i class="fas fa-phone"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="guardian-item">
+                                <div class="guardian-avatar">
+                                    <img src="https://via.placeholder.com/35" alt="Mom">
+                                    <div class="connection-indicator online"></div>
+                                </div>
+                                <div class="guardian-info">
+                                    <span class="guardian-name">Mom</span>
+                                    <span class="guardian-role">Parent</span>
+                                </div>
+                                <button class="contact-btn" onclick="contactGuardian('mom')">
+                                    <i class="fas fa-phone"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="add-guardian-btn" onclick="showAddGuardian()">
+                            <i class="fas fa-plus"></i>
+                            Add Guardian
+                        </button>
+                    </div>
+
+                    <!-- Active Geofences -->
+                    <div class="active-geofences">
+                        <h4>Safe Zones</h4>
+                        <div class="geofence-list">
+                            <div class="geofence-item inside">
+                                <div class="geofence-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="geofence-info">
+                                    <span class="geofence-name">Home</span>
+                                    <span class="geofence-status">Inside</span>
+                                </div>
+                            </div>
+                            
+                            <div class="geofence-item approaching">
+                                <div class="geofence-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="geofence-info">
+                                    <span class="geofence-name">School</span>
+                                    <span class="geofence-status">Approaching</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journey Info -->
+                    <div class="journey-info">
+                        <h4>Current Journey</h4>
+                        <div class="journey-details">
+                            <div class="journey-item">
+                                <i class="fas fa-route"></i>
+                                <span>Route: Home → School</span>
+                            </div>
+                            <div class="journey-item">
+                                <i class="fas fa-clock"></i>
+                                <span>ETA: 15 minutes</span>
+                            </div>
+                            <div class="journey-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Speed: 25 km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages Panel -->
+                <div class="messages-panel">
+                    <div class="panel-header">
+                        <h3>Messages</h3>
+                        <span class="message-count">2 new</span>
+                    </div>
+                    
+                    <div class="messages-list">
+                        <div class="message-item unread">
+                            <div class="message-avatar">
+                                <img src="https://via.placeholder.com/30" alt="Dad">
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="sender-name">Dad</span>
+                                    <span class="message-time">2 min ago</span>
+                                </div>
+                                <p class="message-text">Have you reached school safely?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item unread">
+                            <div class="message-avatar">
+                                <img src="https://via.placeholder.com/30" alt="Mom">
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="sender-name">Mom</span>
+                                    <span class="message-time">5 min ago</span>
+                                </div>
+                                <p class="message-text">Call me when you get to school</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item read">
+                            <div class="message-avatar">
+                                <img src="https://via.placeholder.com/30" alt="Dad">
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="sender-name">Dad</span>
+                                    <span class="message-time">1 hour ago</span>
+                                </div>
+                                <p class="message-text">Good morning! Have a great day at school.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input-area">
+                        <input type="text" placeholder="Type a message..." id="message-input">
+                        <button class="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts Panel -->
+                <div class="alerts-panel">
+                    <div class="panel-header">
+                        <h3>Recent Alerts</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    
+                    <div class="alerts-list">
+                        <div class="alert-item success">
+                            <div class="alert-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="alert-info">
+                                <h4>Safe Arrival</h4>
+                                <p>You safely entered School zone</p>
+                                <span class="alert-time">10 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-item info">
+                            <div class="alert-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-info">
+                                <h4>Route Update</h4>
+                                <p>New route assigned by Dad</p>
+                                <span class="alert-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-item warning">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-info">
+                                <h4>Geofence Exit</h4>
+                                <p>You left Home safe zone</p>
+                                <span class="alert-time">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showMessages()">
+                <i class="fas fa-comments"></i>
+                <span>Messages</span>
+                <div class="nav-badge">2</div>
+            </div>
+            <div class="nav-item" onclick="showSettings()">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            <div class="nav-item" onclick="switchRole()">
+                <i class="fas fa-sync-alt"></i>
+                <span>Switch</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- SOS Modal -->
+    <div id="sos-modal" class="modal hidden">
+        <div class="modal-content sos-modal-content">
+            <div class="sos-header">
+                <div class="sos-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>Emergency SOS Activated</h2>
+                <p>Your guardians will be notified immediately</p>
+            </div>
+            
+            <div class="guardian-contact-info">
+                <h3>Contacting:</h3>
+                <div class="contact-list">
+                    <div class="contact-item">
+                        <span><strong>Dad:</strong> +1 (555) 123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <span><strong>Mom:</strong> +1 (555) 987-6543</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sos-actions">
+                <button class="btn btn-danger" onclick="confirmSOS()">
+                    <i class="fas fa-phone"></i>
+                    Call Dad Now
+                </button>
+                <button class="btn btn-outline" onclick="cancelSOS()">
+                    Cancel
+                </button>
+            </div>
+            
+            <div class="countdown">
+                <p>Auto-calling in <span id="sos-countdown">10</span> seconds</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div id="notification-panel" class="notification-panel hidden">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="clear-all-btn" onclick="clearAllNotifications()">Clear All</button>
+        </div>
+        <div class="notification-list">
+            <div class="notification-item unread">
+                <i class="fas fa-message"></i>
+                <div class="notification-content">
+                    <p><strong>Dad</strong> sent you a message</p>
+                    <span class="notification-time">2 min ago</span>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <i class="fas fa-route"></i>
+                <div class="notification-content">
+                    <p>New route assigned for today</p>
+                    <span class="notification-time">1 hour ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Menu -->
+    <div id="profile-menu" class="profile-menu hidden">
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/50" alt="Profile">
+            <div>
+                <h4 id="profile-name">Sarah Johnson</h4>
+                <p>User Account</p>
+            </div>
+        </div>
+        <ul class="profile-menu-list">
+            <li><a href="#" onclick="editProfile()"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+            <li><a href="#" onclick="privacySettings()"><i class="fas fa-shield-alt"></i> Privacy Settings</a></li>
+            <li><a href="#" onclick="switchRole()"><i class="fas fa-sync-alt"></i> Switch to Guardian Mode</a></li>
+            <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- JavaScript -->
+     <!-- In your guardian-dashboard.html and user-dashboard.html -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../scripts/components/user-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoGuardian - Personal Safety Tracking</title>
+    
+    <!-- CSS Files - Updated paths to match your structure -->
+    <link rel="stylesheet" href="../styles/components/global.css">
+    <link rel="stylesheet" href="../styles/components/landing.css">
+    <link rel="stylesheet" href="../styles/components/dashboard.css">
+    <link rel="stylesheet" href="mobile.css">
+    
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="logo">GeoGuardian</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="../pages/login.html" onclick ="showLogin()">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Landing Page Content -->
+    <div id="landing-page" class="landing-page">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Your Personal Safety Guardian</h1>
+                    <p>Real-time Protection at Your Fingertips</p>
+                    <p class="hero-subtitle">Web-based personal safety tracking with real-time location monitoring, geofencing, and emergency alerts</p>
+                    <button class="btn btn-primary" onclick="showRegister()">Get Started</button>
+                </div>
+                <div class="hero-visual">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Interactive Safety Map</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2>Powerful Safety Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <h3>Real-time Tracking</h3>
+                        <p>GPS-powered web tracking accessible across all devices with precise location monitoring</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Smart Geofencing</h3>
+                        <p>Customizable safe zones with automated boundary alerts and instant notifications</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Emergency SOS</h3>
+                        <p>Instant alerts to designated guardians with live location sharing and emergency response</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Register & Connect</h3>
+                        <p>Create account and link with guardians</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Set Safe Zones</h3>
+                        <p>Define geofenced areas and customize alerts</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Stay Protected</h3>
+                        <p>Real-time monitoring with instant emergency response</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Form (Initially Hidden) -->
+    <div id="login-form" class="auth-form hidden">
+        <div class="form-container">
+            <h2>Login to GeoGuardian</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox"> Remember Me
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p><a href="#" onclick="showRegister()">Don't have an account? Register</a></p>
+                <p><a href="#" onclick="showLanding()">Back to Home</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Registration Form (Initially Hidden) -->
+    <div id="register-form" class="auth-form hidden">
+        <div class="form-container">
+            <h2>Create Your GeoGuardian Account</h2>
+            <form>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>User Type:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="userType" value="user"> User</label>
+                        <label><input type="radio" name="userType" value="guardian"> Guardian</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+                <p><a href="#" onclick="showLogin()">Already have an account? Login</a></p>
+                <p><a href="#" onclick="showLanding()">Back to Home</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Loading GeoGuardian...</p>
+    </div>
+
+    <!-- JavaScript Files - Updated paths to match your structure -->
+    <script src="../scripts/components/app.js"></script>
+    <script src="../scripts/components/script.js"></script>
+</body>
+</html>

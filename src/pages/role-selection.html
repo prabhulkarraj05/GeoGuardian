@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Role - GeoGuardian</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles/components/global.css">
+    <link rel="stylesheet" href="../styles/components/role-selection.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                GeoGuardian
+            </div>
+            <div class="user-info">
+                <span class="welcome-text">Welcome, <span id="user-name">John Doe</span></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="portal-container">
+        <div class="role-selection-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Choose Your Role</h1>
+                <p>Select how you want to use GeoGuardian today. You can switch between roles anytime.</p>
+            </div>
+
+            <!-- Role Cards -->
+            <div class="role-cards">
+                <!-- Guardian Role Card -->
+                <div class="role-card guardian-card" onclick="selectRole('guardian')">
+                    <div class="role-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h2>Guardian</h2>
+                    <p class="role-description">Monitor and protect your loved ones</p>
+
+                    <ul class="role-features">
+                        <li><i class="fas fa-check"></i> Track multiple users</li>
+                        <li><i class="fas fa-check"></i> Create geofences</li>
+                        <li><i class="fas fa-check"></i> Receive SOS alerts</li>
+                        <li><i class="fas fa-check"></i> View location history</li>
+                        <li><i class="fas fa-check"></i> Send messages</li>
+                    </ul>
+
+                    <button class="role-btn guardian-btn">
+                        <i class="fas fa-arrow-right"></i>
+                        Continue as Guardian
+                    </button>
+
+                    <div class="role-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Guardian Mode</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Role Card -->
+                <div class="role-card user-card" onclick="selectRole('user')">
+                    <div class="role-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h2>User</h2>
+                    <p class="role-description">Share your location with guardians</p>
+
+                    <ul class="role-features">
+                        <li><i class="fas fa-check"></i> Share location safely</li>
+                        <li><i class="fas fa-check"></i> Emergency SOS button</li>
+                        <li><i class="fas fa-check"></i> Connect with guardians</li>
+                        <li><i class="fas fa-check"></i> View safe routes</li>
+                        <li><i class="fas fa-check"></i> Privacy controls</li>
+                    </ul>
+
+                    <button class="role-btn user-btn">
+                        <i class="fas fa-arrow-right"></i>
+                        Continue as User
+                    </button>
+
+                    <div class="role-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-user-check"></i>
+                            <span>User Mode</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Switch Info -->
+            <div class="role-switch-info">
+                <div class="info-card">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3>Flexible Role Switching</h3>
+                    <p>You can switch between Guardian and User modes anytime from your dashboard. One account, multiple
+                        ways to stay safe.</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity (if any) -->
+            <div class="recent-activity" id="recent-activity" style="display: none;">
+                <h3>Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Last used as Guardian - 2 hours ago</span>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-user-friends"></i>
+                        <span>3 users currently connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Selection Modal -->
+    <div id="role-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Confirm Role Selection</h2>
+                <button class="close-btn" onclick="closeRoleModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="selected-role-info">
+                    <div class="selected-role-icon" id="selected-role-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 id="selected-role-name">Guardian Mode</h3>
+                    <p id="selected-role-desc">You'll be able to monitor and protect your loved ones</p>
+                </div>
+
+                <div class="role-permissions">
+                    <h4>This will allow you to:</h4>
+                    <ul id="permission-list">
+                        <!-- Permissions will be populated by JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeRoleModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmRoleSelection()" id="confirm-btn">
+                        <i class="fas fa-check"></i>
+                        Confirm Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Setting up your dashboard...</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../scripts/components/role-selection.js"></script>
+</body>
+
+</html>

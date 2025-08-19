@@ -1,0 +1,650 @@
+/* About Page Specific Styles */
+
+/* Hero Section */
+.about-hero {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%);
+    color: white;
+    padding: 120px 0 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+    opacity: 0.3;
+}
+
+.about-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.about-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+}
+
+.project-info {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 24px;
+}
+
+.project-info span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+/* Introduction Section */
+.introduction-section {
+    padding: 80px 0;
+    background: #f8fafc;
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 64px;
+    align-items: start;
+}
+
+.intro-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 32px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.intro-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--neutral-gray);
+    margin-bottom: 24px;
+}
+
+.key-benefits {
+    margin-top: 40px;
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.key-benefits h3 {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.key-benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.key-benefits li {
+    padding: 12px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 1rem;
+    color: var(--neutral-gray);
+}
+
+.key-benefits li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success-green);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Project Stats */
+.project-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 100px;
+}
+
+.stat-card {
+    background: white;
+    padding: 32px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card i {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 16px;
+}
+
+.stat-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.stat-card p {
+    font-size: 0.9rem;
+    color: var(--neutral-gray);
+    margin: 0;
+}
+
+/* Objectives Section */
+.objectives-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.objectives-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.section-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--neutral-gray);
+    max-width: 800px;
+    margin: 0 auto 64px;
+    line-height: 1.6;
+}
+
+.objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+}
+
+.objective-card {
+    background: #f8fafc;
+    padding: 40px 32px;
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.objective-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-blue);
+    background: white;
+}
+
+.objective-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.objective-card:hover .objective-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.objective-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.objective-card p {
+    color: var(--neutral-gray);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Features Section */
+.features-section {
+    padding: 80px 0;
+    background: var(--light-gray);
+}
+
+.features-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 64px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.features-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.feature-highlight {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.feature-highlight:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-blue);
+}
+
+.feature-highlight .feature-icon {
+    font-size: 3rem;
+    color: var(--primary-blue);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.feature-highlight:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+.feature-highlight h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.feature-highlight p {
+    color: var(--neutral-gray);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Technology Section */
+.technology-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.technology-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 64px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.tech-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+}
+
+.tech-category {
+    background: #f8fafc;
+    padding: 40px 32px;
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+}
+
+.tech-category:hover {
+    transform: translateY(-4px);
+}
+
+.tech-category h3 {
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--primary-blue);
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.tech-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tech-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tech-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tech-item i {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    width: 32px;
+    text-align: center;
+}
+
+.tech-item span {
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+/* Timeline Section */
+.timeline-section {
+    padding: 80px 0;
+    background: var(--light-gray);
+}
+
+.timeline-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 64px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--primary-blue), var(--secondary-blue));
+    border-radius: 2px;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.timeline-marker {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.timeline-content {
+    margin-left: 32px;
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    flex: 1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateY(-4px);
+}
+
+.timeline-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.timeline-content p {
+    color: var(--neutral-gray);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Outcomes Section */
+.outcomes-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.outcomes-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 64px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.outcome-card {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.outcome-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: var(--success-green);
+}
+
+.outcome-card i {
+    font-size: 3rem;
+    color: var(--success-green);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.outcome-card:hover i {
+    transform: scale(1.1);
+}
+
+.outcome-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.outcome-card p {
+    color: var(--neutral-gray);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Call to Action */
+.about-cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--dark-gray) 0%, #374151 100%);
+    color: white;
+    text-align: center;
+}
+
+.about-cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.about-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background: white;
+    color: var(--dark-gray);
+    transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .about-hero {
+        padding: 100px 0 60px;
+    }
+    
+    .intro-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .project-stats {
+        position: static;
+    }
+    
+    .objectives-grid,
+    .features-showcase,
+    .tech-overview,
+    .outcomes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-info {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .timeline::before {
+        left: 15px;
+    }
+    
+    .timeline-marker {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+    
+    .timeline-content {
+        margin-left: 16px;
+        padding: 24px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-buttons .btn {
+        width: 250px;
+    }
+    
+    .section-intro {
+        font-size: 1.1rem;
+        margin-bottom: 48px;
+    }
+    
+    h2 {
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .intro-content h2,
+    .objectives-section h2,
+    .features-section h2,
+    .technology-section h2,
+    .timeline-section h2,
+    .outcomes-section h2,
+    .about-cta h2 {
+        font-size: 1.8rem;
+    }
+    
+    .objective-card,
+    .feature-highlight,
+    .outcome-card {
+        padding: 32px 24px;
+    }
+    
+    .tech-category {
+        padding: 32px 24px;
+    }
+}

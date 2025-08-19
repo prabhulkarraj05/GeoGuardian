@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GeoGuardian</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles/components/global.css">
+    <link rel="stylesheet" href="../styles/components/login.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="login-background">
+        <div class="pattern-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="login-nav">
+        <div class="nav-content">
+            <a href="../pages/index.html" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                GeoGuardian
+            </a>
+            <a href="../pages/index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to info
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Login Form Header -->
+            <div class="login-header">
+                <div class="login-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h1>Welcome Back</h1>
+                <p>Sign in to your GeoGuardian account</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="login-form" onsubmit="handleLogin(event)">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                    >
+                    <span class="error-message" id="email-error"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="password-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message" id="password-error"></span>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password" onclick="showForgotPassword()">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-btn" id="login-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loading hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Signing in...
+                    </span>
+                </button>
+
+                <!-- Error Message -->
+                <div class="form-error hidden" id="form-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="error-text">Invalid credentials. Please try again.</span>
+                </div>
+
+                <!-- Success Message -->
+                <div class="form-success hidden" id="form-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Login successful! Redirecting...</span>
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <!-- Social Login Options (Optional) -->
+            <div class="social-login">
+                <button class="social-btn google-btn" onclick="loginWithGoogle()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Sign Up Link -->
+            <div class="signup-link">
+                <p>Don't have an account? 
+                    <a href="../pages/register.html">Create Account</a>
+                </p>
+            </div>
+
+            <!-- Role Selection Info -->
+            <div class="role-info">
+                <p class="info-text">
+                    <i class="fas fa-info-circle"></i>
+                    New users can choose between Guardian or User accounts during registration
+                </p>
+            </div>
+        </div>
+
+        <!-- Demo Credentials (Remove in production) -->
+        <div class="demo-credentials">
+            <h4>Demo Credentials:</h4>
+            <div class="demo-accounts">
+                <div class="demo-account">
+                    <strong>Guardian Account:</strong><br>
+                    Email: guardian@demo.com<br>
+                    Password: guardian123
+                </div>
+                <div class="demo-account">
+                    <strong>User Account:</strong><br>
+                    Email: user@demo.com<br>
+                    Password: user123
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <button class="close-btn" onclick="closeForgotPassword()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="forgot-password-form" onsubmit="handleForgotPassword(event)">
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="reset-email" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Send Reset Link
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../scripts/components/login.js"></script>
+</body>
+</html>

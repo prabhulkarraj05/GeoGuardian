@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Dashboard - GeoGuardian</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles/components/global.css">
+    <link rel="stylesheet" href="../styles/components/guardian-dashboard.css">
+
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    GeoGuardian
+                </div>
+                <div class="role-indicator">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Guardian Mode</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="active-users">3</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="active-alerts">1</span>
+                        <span class="stat-label">Alerts</span>
+                    </div>
+                </div>
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notification-count">2</span>
+                </div>
+                <div class="user-profile" onclick="toggleProfileMenu()">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-avatar">
+                    <span class="profile-name" id="guardian-name">John Guardian</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link" onclick="showSection('overview')">
+                            <i class="fas fa-home"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('manage-users')">
+                            <i class="fas fa-users"></i>
+                            <span>Manage Users</span>
+                            <span class="nav-badge">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('geofences')">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Geofences</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('alerts')">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Alerts</span>
+                            <span class="nav-badge alert-badge">1</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('history')">
+                            <i class="fas fa-history"></i>
+                            <span>Location History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('messages')">
+                            <i class="fas fa-comments"></i>
+                            <span>Messages</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <button class="role-switch-btn" onclick="switchRole()">
+                        <i class="fas fa-sync-alt"></i>
+                        Switch to User Mode
+                    </button>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+
+            <!-- Overview Section -->
+            <div id="overview-section" class="content-section active">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-content">
+                        <h1>Welcome back, <span id="welcome-name">John</span>!</h1>
+                        <p>Monitor and protect your loved ones with real-time tracking and smart alerts.</p>
+                    </div>
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary" onclick="showSection('manage-users')">
+                            <i class="fas fa-user-plus"></i>
+                            Add New User
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Map Container -->
+                    <div class="map-container">
+                        <div class="map-header">
+                            <h2>Live Location Map</h2>
+                            <div class="map-controls">
+                                 <button class="map-control-btn" onclick="centerMap()">
+                                    <i class="fas fa-crosshairs"></i>
+                                  </button>
+                                 <button class="map-control-btn" onclick="toggleMapLayers()">
+                                    <i class="fas fa-layer-group"></i>
+                                </button>
+                                <button class="map-control-btn" onclick="fullscreenMap()">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="guardian-map" class="map-display"></div>
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-marker user-marker"></div>
+                                <span>Active Users</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-marker geofence-marker"></div>
+                                <span>Geofences</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-marker alert-marker"></div>
+                                <span>Alerts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Users Panel -->
+                    <div class="users-panel">
+                        <div class="panel-header">
+                            <h3>Active Users</h3>
+                            <span class="panel-count">3 online</span>
+                        </div>
+                        <div class="users-list">
+                            <div class="user-item" onclick="focusOnUser('user1')">
+                                <div class="user-avatar">
+                                    <img src="https://via.placeholder.com/40" alt="Sarah">
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="user-info">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>At Home • Last update: 2 min ago</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="action-btn" onclick="messageUser('user1')" title="Send Message">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="callUser('user1')" title="Call User">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="user-item" onclick="focusOnUser('user2')">
+                                <div class="user-avatar">
+                                    <img src="https://via.placeholder.com/40" alt="Mike">
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="user-info">
+                                    <h4>Mike Wilson</h4>
+                                    <p>At School • Last update: 5 min ago</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="action-btn" onclick="messageUser('user2')">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="callUser('user2')">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="user-item" onclick="focusOnUser('user3')">
+                                <div class="user-avatar">
+                                    <img src="https://via.placeholder.com/40" alt="Emma">
+                                    <div class="status-indicator away"></div>
+                                </div>
+                                <div class="user-info">
+                                    <h4>Emma Davis</h4>
+                                    <p>Moving • Last update: 1 min ago</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="action-btn" onclick="messageUser('user3')">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="callUser('user3')">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="add-user-btn" onclick="showAddUserModal()">
+                            <i class="fas fa-plus"></i>
+                            Add New User
+                        </button>
+                    </div>
+
+                    <!-- Quick Actions Panel -->
+                    <div class="quick-actions-panel">
+                        <div class="panel-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-btn" onclick="createGeofence()">
+                                <i class="fas fa-draw-polygon"></i>
+                                <span>Create Geofence</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="sendBroadcast()">
+                                <i class="fas fa-broadcast-tower"></i>
+                                <span>Send Broadcast</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="emergencyMode()">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Emergency Mode</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="viewReports()">
+                                <i class="fas fa-chart-line"></i>
+                                <span>View Reports</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Alerts Panel -->
+                    <div class="alerts-panel">
+                        <div class="panel-header">
+                            <h3>Recent Alerts</h3>
+                            <a href="#" onclick="showSection('alerts')" class="view-all-link">View All</a>
+                        </div>
+                        <div class="alerts-list">
+                            <div class="alert-item high-priority">
+                                <div class="alert-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="alert-info">
+                                    <h4>Geofence Breach</h4>
+                                    <p>Sarah left Home area</p>
+                                    <span class="alert-time">5 minutes ago</span>
+                                </div>
+                                <button class="alert-action" onclick="viewAlert('alert1')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+
+                            <div class="alert-item medium-priority">
+                                <div class="alert-icon">
+                                    <i class="fas fa-battery-quarter"></i>
+                                </div>
+                                <div class="alert-info">
+                                    <h4>Low Battery</h4>
+                                    <p>Mike's device at 15%</p>
+                                    <span class="alert-time">15 minutes ago</span>
+                                </div>
+                                <button class="alert-action" onclick="viewAlert('alert2')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+
+                            <div class="alert-item low-priority">
+                                <div class="alert-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="alert-info">
+                                    <h4>Safe Arrival</h4>
+                                    <p>Emma arrived at School</p>
+                                    <span class="alert-time">1 hour ago</span>
+                                </div>
+                                <button class="alert-action" onclick="viewAlert('alert3')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections will be added here -->
+            <div id="manage-users-section" class="content-section">
+                <h2>Manage Users</h2>
+                <p>User management interface will be implemented here.</p>
+            </div>
+
+            <div id="geofences-section" class="content-section">
+                <h2>Geofences</h2>
+                <p>Geofence management interface will be implemented here.</p>
+            </div>
+
+            <div id="alerts-section" class="content-section">
+                <h2>Alerts</h2>
+                <p>Alerts management interface will be implemented here.</p>
+            </div>
+
+            <div id="history-section" class="content-section">
+                <h2>Location History</h2>
+                <p>Location history interface will be implemented here.</p>
+            </div>
+
+            <div id="messages-section" class="content-section">
+                <h2>Messages</h2>
+                <p>Messages interface will be implemented here.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <button class="close-btn" onclick="closeAddUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-user-form" onsubmit="addNewUser(event)">
+                    <div class="form-group">
+                        <label for="userName">User Name</label>
+                        <input type="text" id="userName" placeholder="Enter user's name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email Address</label>
+                        <input type="email" id="userEmail" placeholder="user@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPhone">Phone Number</label>
+                        <input type="tel" id="userPhone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="relationship">Relationship</label>
+                        <select id="relationship" required>
+                            <option value="">Select relationship</option>
+                            <option value="child">Child</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                            <option value="friend">Friend</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeAddUserModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Send Invitation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div id="notification-panel" class="notification-panel hidden">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="clear-all-btn" onclick="clearAllNotifications()">Clear All</button>
+        </div>
+        <div class="notification-list">
+            <div class="notification-item unread">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="notification-content">
+                    <p><strong>Sarah</strong> left Home geofence</p>
+                    <span class="notification-time">5 min ago</span>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <i class="fas fa-battery-quarter"></i>
+                <div class="notification-content">
+                    <p><strong>Mike's</strong> device battery is low (15%)</p>
+                    <span class="notification-time">15 min ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Menu -->
+    <div id="profile-menu" class="profile-menu hidden">
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/50" alt="Profile">
+            <div>
+                <h4 id="profile-name">John Guardian</h4>
+                <p>Guardian Account</p>
+            </div>
+        </div>
+        <ul class="profile-menu-list">
+            <li><a href="#" onclick="editProfile()"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+            <li><a href="#" onclick="accountSettings()"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#" onclick="switchRole()"><i class="fas fa-sync-alt"></i> Switch to User Mode</a></li>
+            <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../scripts/components/guardian-dashboard.js"></script>
+</body>
+
+</html>
